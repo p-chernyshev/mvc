@@ -4,4 +4,24 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="wwwroot\lib\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="wwwroot\lib\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="wwwroot\lib\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="wwwroot\lib\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\lib\**" />
+    </ItemGroup>
+
 </Project>
