@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Mvc.Data;
 
 namespace Mvc
 {
@@ -24,6 +26,9 @@ namespace Mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<MvcDiskContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MvcDiskContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
