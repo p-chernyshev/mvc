@@ -1,37 +1,76 @@
-﻿@model IEnumerable<Mvc.Models.Disk>
+﻿@model DiskListViewModel
 
 @{
     ViewData["Title"] = "Index";
+}
+
+@functions
+{
+    string GetNewSortDirection(string sortBy)
+    {
+        return sortBy != Model.SortBy || Model.SortDirection == "desc"
+            ? null
+            : "desc";
+    }
+
 }
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.ActionLink(
+                    Html.DisplayNameFor(model => model.Disks[0].Name),
+                    "Index",
+                    new { sortBy = "Name", sortDirection = GetNewSortDirection("Name") }
+                )
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SizeGb)
+                @Html.ActionLink(
+                    Html.DisplayNameFor(model => model.Disks[0].SizeGb),
+                    "Index",
+                    new { sortBy = "SizeGb", sortDirection = GetNewSortDirection("SizeGb") }
+                )
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WriteSpeedMbps)
+                @Html.ActionLink(
+                    Html.DisplayNameFor(model => model.Disks[0].WriteSpeedMbps),
+                    "Index",
+                    new { sortBy = "WriteSpeedMbps", sortDirection = GetNewSortDirection("WriteSpeedMbps") }
+                )
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReadSpeedMbps)
+                @Html.ActionLink(
+                    Html.DisplayNameFor(model => model.Disks[0].ReadSpeedMbps),
+                    "Index",
+                    new { sortBy = "ReadSpeedMbps", sortDirection = GetNewSortDirection("ReadSpeedMbps") }
+                )
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.ActionLink(
+                    Html.DisplayNameFor(model => model.Disks[0].Price),
+                    "Index",
+                    new { sortBy = "Price", sortDirection = GetNewSortDirection("Price") }
+                )
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.ActionLink(
+                    Html.DisplayNameFor(model => model.Disks[0].Type),
+                    "Index",
+                    new { sortBy = "Type", sortDirection = GetNewSortDirection("Type") }
+                )
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Form)
+                @Html.ActionLink(
+                    Html.DisplayNameFor(model => model.Disks[0].Form),
+                    "Index",
+                    new { sortBy = "Form", sortDirection = GetNewSortDirection("Form") }
+                )
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Disks) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

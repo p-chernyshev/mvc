@@ -19,9 +19,14 @@ namespace Mvc.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortBy = "Id", string sortDirection = "asc")
         {
-            return View(await _context.Disk.ToListAsync());
+            return View(new DiskListViewModel
+            {
+                Disks = await _context.Disk.ToListAsync(),
+                SortBy = sortBy,
+                SortDirection = sortDirection,
+            });
         }
     }
 }
