@@ -24,6 +24,12 @@
                     "Index",
                     new { sortBy = "Name", sortDirection = GetNewSortDirection("Name") }
                 )
+                @if (Model.SortBy == "Name")
+                {
+                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                         <use href="assets/icons.svg#downArrow"></use>
+                    </svg>
+                }
             </th>
             <th>
                 @Html.ActionLink(
@@ -31,6 +37,12 @@
                     "Index",
                     new { sortBy = "SizeGb", sortDirection = GetNewSortDirection("SizeGb") }
                 )
+                @if (Model.SortBy == "SizeGb")
+                {
+                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                         <use href="assets/icons.svg#downArrow"></use>
+                    </svg>
+                }
             </th>
             <th>
                 @Html.ActionLink(
@@ -38,6 +50,12 @@
                     "Index",
                     new { sortBy = "WriteSpeedMbps", sortDirection = GetNewSortDirection("WriteSpeedMbps") }
                 )
+                @if (Model.SortBy == "WriteSpeedMbps")
+                {
+                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                         <use href="assets/icons.svg#downArrow"></use>
+                    </svg>
+                }
             </th>
             <th>
                 @Html.ActionLink(
@@ -45,6 +63,12 @@
                     "Index",
                     new { sortBy = "ReadSpeedMbps", sortDirection = GetNewSortDirection("ReadSpeedMbps") }
                 )
+                @if (Model.SortBy == "ReadSpeedMbps")
+                {
+                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                         <use href="assets/icons.svg#downArrow"></use>
+                    </svg>
+                }
             </th>
             <th>
                 @Html.ActionLink(
@@ -52,6 +76,12 @@
                     "Index",
                     new { sortBy = "Price", sortDirection = GetNewSortDirection("Price") }
                 )
+                @if (Model.SortBy == "Price")
+                {
+                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                         <use href="assets/icons.svg#downArrow"></use>
+                    </svg>
+                }
             </th>
             <th>
                 @Html.ActionLink(
@@ -59,6 +89,12 @@
                     "Index",
                     new { sortBy = "Type", sortDirection = GetNewSortDirection("Type") }
                 )
+                @if (Model.SortBy == "Type")
+                {
+                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                         <use href="assets/icons.svg#downArrow"></use>
+                    </svg>
+                }
             </th>
             <th>
                 @Html.ActionLink(
@@ -66,6 +102,12 @@
                     "Index",
                     new { sortBy = "Form", sortDirection = GetNewSortDirection("Form") }
                 )
+                @if (Model.SortBy == "Form")
+                {
+                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                         <use href="assets/icons.svg#downArrow"></use>
+                    </svg>
+                }
             </th>
         </tr>
     </thead>

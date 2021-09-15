@@ -1,0 +1,8 @@
+.disk-table__sort-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.disk-table__sort-icon_up {
+    transform: scaleY(-1);
+}
