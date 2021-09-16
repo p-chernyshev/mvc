@@ -19,18 +19,22 @@ namespace Mvc.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string sortBy = "Id", string sortDirection = "asc")
+        public async Task<IActionResult> Index(string sortBy = "Id", string sortDirection = "asc", string search = "")
         {
+            var filteredQuery = string.IsNullOrEmpty(search)
+                ? _context.Disk
+                : _context.Disk.Where(disk => disk.Name.Contains(search));
+
             var sortedQuery = sortBy switch
             {
-                "Name" => sortDirection == "asc" ? _context.Disk.OrderBy(disk => disk.Name) : _context.Disk.OrderByDescending(disk => disk.Name),
-                "SizeGb" => sortDirection == "asc" ? _context.Disk.OrderBy(disk => disk.SizeGb) : _context.Disk.OrderByDescending(disk => disk.SizeGb),
-                "WriteSpeedMbps" => sortDirection == "asc" ? _context.Disk.OrderBy(disk => disk.WriteSpeedMbps) : _context.Disk.OrderByDescending(disk => disk.WriteSpeedMbps),
-                "ReadSpeedMbps" => sortDirection == "asc" ? _context.Disk.OrderBy(disk => disk.ReadSpeedMbps) : _context.Disk.OrderByDescending(disk => disk.ReadSpeedMbps),
-                "Price" => sortDirection == "asc" ? _context.Disk.OrderBy(disk => disk.Price) : _context.Disk.OrderByDescending(disk => disk.Price),
-                "Type" => sortDirection == "asc" ? _context.Disk.OrderBy(disk => disk.Type) : _context.Disk.OrderByDescending(disk => disk.Type),
-                "Form" => sortDirection == "asc" ? _context.Disk.OrderBy(disk => disk.Form) : _context.Disk.OrderByDescending(disk => disk.Form),
-                _ => sortDirection == "asc" ? _context.Disk.OrderBy(disk => disk.Id) : _context.Disk.OrderByDescending(disk => disk.Id),
+                "Name" => sortDirection == "asc" ? filteredQuery.OrderBy(disk => disk.Name) : filteredQuery.OrderByDescending(disk => disk.Name),
+                "SizeGb" => sortDirection == "asc" ? filteredQuery.OrderBy(disk => disk.SizeGb) : filteredQuery.OrderByDescending(disk => disk.SizeGb),
+                "WriteSpeedMbps" => sortDirection == "asc" ? filteredQuery.OrderBy(disk => disk.WriteSpeedMbps) : filteredQuery.OrderByDescending(disk => disk.WriteSpeedMbps),
+                "ReadSpeedMbps" => sortDirection == "asc" ? filteredQuery.OrderBy(disk => disk.ReadSpeedMbps) : filteredQuery.OrderByDescending(disk => disk.ReadSpeedMbps),
+                "Price" => sortDirection == "asc" ? filteredQuery.OrderBy(disk => disk.Price) : filteredQuery.OrderByDescending(disk => disk.Price),
+                "Type" => sortDirection == "asc" ? filteredQuery.OrderBy(disk => disk.Type) : filteredQuery.OrderByDescending(disk => disk.Type),
+                "Form" => sortDirection == "asc" ? filteredQuery.OrderBy(disk => disk.Form) : filteredQuery.OrderByDescending(disk => disk.Form),
+                _ => sortDirection == "asc" ? filteredQuery.OrderBy(disk => disk.Id) : filteredQuery.OrderByDescending(disk => disk.Id),
             };
 
             return View(new DiskListViewModel
@@ -38,6 +42,7 @@ namespace Mvc.Controllers
                 Disks = await sortedQuery.ToListAsync(),
                 SortBy = sortBy,
                 SortDirection = sortDirection,
+                Search = search,
             });
         }
     }

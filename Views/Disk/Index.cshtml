@@ -15,6 +15,17 @@
 
 }
 
+
+@using (Html.BeginForm("Index", "Disk", FormMethod.Get))
+{
+    <p>
+        @Html.Hidden("sortBy")
+        @if(Model.SortDirection == "desc") {@Html.Hidden("sortDirection")}
+        @Html.TextBox("search")
+        <input type="submit" value="Поиск"/>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -22,12 +33,12 @@
                 @Html.ActionLink(
                     Html.DisplayNameFor(model => model.Disks[0].Name),
                     "Index",
-                    new { sortBy = "Name", sortDirection = GetNewSortDirection("Name") }
-                )
+                    new { sortBy = "Name", sortDirection = GetNewSortDirection("Name"), search = Model.Search }
+                    )
                 @if (Model.SortBy == "Name")
                 {
                     <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
-                         <use href="assets/icons.svg#downArrow"></use>
+                        <use href="assets/icons.svg#downArrow"></use>
                     </svg>
                 }
             </th>
@@ -35,7 +46,7 @@
                 @Html.ActionLink(
                     Html.DisplayNameFor(model => model.Disks[0].SizeGb),
                     "Index",
-                    new { sortBy = "SizeGb", sortDirection = GetNewSortDirection("SizeGb") }
+                    new { sortBy = "SizeGb", sortDirection = GetNewSortDirection("SizeGb"), search = Model.Search }
                 )
                 @if (Model.SortBy == "SizeGb")
                 {
@@ -48,7 +59,7 @@
                 @Html.ActionLink(
                     Html.DisplayNameFor(model => model.Disks[0].WriteSpeedMbps),
                     "Index",
-                    new { sortBy = "WriteSpeedMbps", sortDirection = GetNewSortDirection("WriteSpeedMbps") }
+                    new { sortBy = "WriteSpeedMbps", sortDirection = GetNewSortDirection("WriteSpeedMbps"), search = Model.Search }
                 )
                 @if (Model.SortBy == "WriteSpeedMbps")
                 {
@@ -61,7 +72,7 @@
                 @Html.ActionLink(
                     Html.DisplayNameFor(model => model.Disks[0].ReadSpeedMbps),
                     "Index",
-                    new { sortBy = "ReadSpeedMbps", sortDirection = GetNewSortDirection("ReadSpeedMbps") }
+                    new { sortBy = "ReadSpeedMbps", sortDirection = GetNewSortDirection("ReadSpeedMbps"), search = Model.Search }
                 )
                 @if (Model.SortBy == "ReadSpeedMbps")
                 {
@@ -74,7 +85,7 @@
                 @Html.ActionLink(
                     Html.DisplayNameFor(model => model.Disks[0].Price),
                     "Index",
-                    new { sortBy = "Price", sortDirection = GetNewSortDirection("Price") }
+                    new { sortBy = "Price", sortDirection = GetNewSortDirection("Price"), search = Model.Search }
                 )
                 @if (Model.SortBy == "Price")
                 {
@@ -87,7 +98,7 @@
                 @Html.ActionLink(
                     Html.DisplayNameFor(model => model.Disks[0].Type),
                     "Index",
-                    new { sortBy = "Type", sortDirection = GetNewSortDirection("Type") }
+                    new { sortBy = "Type", sortDirection = GetNewSortDirection("Type"), search = Model.Search }
                 )
                 @if (Model.SortBy == "Type")
                 {
@@ -100,7 +111,7 @@
                 @Html.ActionLink(
                     Html.DisplayNameFor(model => model.Disks[0].Form),
                     "Index",
-                    new { sortBy = "Form", sortDirection = GetNewSortDirection("Form") }
+                    new { sortBy = "Form", sortDirection = GetNewSortDirection("Form"), search = Model.Search }
                 )
                 @if (Model.SortBy == "Form")
                 {

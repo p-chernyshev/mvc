@@ -7,5 +7,6 @@ namespace Mvc.Models
         public List<Disk> Disks;
         public string SortBy;
         public string SortDirection;
+        public string Search;
     }
 }
