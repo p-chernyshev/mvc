@@ -6,3 +6,48 @@
 .disk-table__sort-icon_up {
     transform: scaleY(-1);
 }
+
+.disk-table__cell-name {
+    font-weight: 700;
+}
+
+.disk-table__search-input {
+    vertical-align: middle;
+    height: 40px;
+    margin-right: 5px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition:
+        border-color 0.15s,
+        box-shadow 0.15s;
+}
+
+.disk-table__search-input:focus {
+    border-color: var(--border-focus);
+    outline: none;
+    box-shadow:
+        inset 0 1px 1px rgba(34, 37, 32, 0.04),
+        0 0 1px rgba(62, 67, 59, 0.15);
+}
+
+.disk-table__search-button {
+    vertical-align: middle;
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    background: transparent;
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    color: var(--primary);
+    font-weight: 600;
+    line-height: 40px;
+    text-transform: uppercase;
+    transition: background 0.15s;
+}
+
+.disk-table__search-button:hover {
+    background-color: var(--primary);
+    color: var(--text-white);
+    text-decoration: underline;
+}

@@ -15,138 +15,141 @@
 
 }
 
+<div class="disk-table">
 
-@using (Html.BeginForm("Index", "Disk", FormMethod.Get))
-{
-    <p>
-        @Html.Hidden("sortBy")
-        @if(Model.SortDirection == "desc") {@Html.Hidden("sortDirection")}
-        @Html.TextBox("search")
-        <input type="submit" value="Поиск"/>
-    </p>
-}
+    @using (Html.BeginForm("Index", "Disk", FormMethod.Get))
+    {
+        <p>
+            @Html.Hidden("sortBy")
+            @if(Model.SortDirection == "desc") {@Html.Hidden("sortDirection")}
+            <input class="disk-table__search-input" type="text" name="search" value="@Model.Search">
+            <input class="disk-table__search-button" type="submit" value="Поиск"/>
+        </p>
+    }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.ActionLink(
-                    Html.DisplayNameFor(model => model.Disks[0].Name),
-                    "Index",
-                    new { sortBy = "Name", sortDirection = GetNewSortDirection("Name"), search = Model.Search }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.ActionLink(
+                        Html.DisplayNameFor(model => model.Disks[0].Name),
+                        "Index",
+                        new { sortBy = "Name", sortDirection = GetNewSortDirection("Name"), search = Model.Search }
+                        )
+                    @if (Model.SortBy == "Name")
+                    {
+                        <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                            <use href="assets/icons.svg#downArrow"></use>
+                        </svg>
+                    }
+                </th>
+                <th>
+                    @Html.ActionLink(
+                        Html.DisplayNameFor(model => model.Disks[0].SizeGb),
+                        "Index",
+                        new { sortBy = "SizeGb", sortDirection = GetNewSortDirection("SizeGb"), search = Model.Search }
                     )
-                @if (Model.SortBy == "Name")
-                {
-                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
-                        <use href="assets/icons.svg#downArrow"></use>
-                    </svg>
-                }
-            </th>
-            <th>
-                @Html.ActionLink(
-                    Html.DisplayNameFor(model => model.Disks[0].SizeGb),
-                    "Index",
-                    new { sortBy = "SizeGb", sortDirection = GetNewSortDirection("SizeGb"), search = Model.Search }
-                )
-                @if (Model.SortBy == "SizeGb")
-                {
-                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
-                         <use href="assets/icons.svg#downArrow"></use>
-                    </svg>
-                }
-            </th>
-            <th>
-                @Html.ActionLink(
-                    Html.DisplayNameFor(model => model.Disks[0].WriteSpeedMbps),
-                    "Index",
-                    new { sortBy = "WriteSpeedMbps", sortDirection = GetNewSortDirection("WriteSpeedMbps"), search = Model.Search }
-                )
-                @if (Model.SortBy == "WriteSpeedMbps")
-                {
-                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
-                         <use href="assets/icons.svg#downArrow"></use>
-                    </svg>
-                }
-            </th>
-            <th>
-                @Html.ActionLink(
-                    Html.DisplayNameFor(model => model.Disks[0].ReadSpeedMbps),
-                    "Index",
-                    new { sortBy = "ReadSpeedMbps", sortDirection = GetNewSortDirection("ReadSpeedMbps"), search = Model.Search }
-                )
-                @if (Model.SortBy == "ReadSpeedMbps")
-                {
-                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
-                         <use href="assets/icons.svg#downArrow"></use>
-                    </svg>
-                }
-            </th>
-            <th>
-                @Html.ActionLink(
-                    Html.DisplayNameFor(model => model.Disks[0].Price),
-                    "Index",
-                    new { sortBy = "Price", sortDirection = GetNewSortDirection("Price"), search = Model.Search }
-                )
-                @if (Model.SortBy == "Price")
-                {
-                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
-                         <use href="assets/icons.svg#downArrow"></use>
-                    </svg>
-                }
-            </th>
-            <th>
-                @Html.ActionLink(
-                    Html.DisplayNameFor(model => model.Disks[0].Type),
-                    "Index",
-                    new { sortBy = "Type", sortDirection = GetNewSortDirection("Type"), search = Model.Search }
-                )
-                @if (Model.SortBy == "Type")
-                {
-                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
-                         <use href="assets/icons.svg#downArrow"></use>
-                    </svg>
-                }
-            </th>
-            <th>
-                @Html.ActionLink(
-                    Html.DisplayNameFor(model => model.Disks[0].Form),
-                    "Index",
-                    new { sortBy = "Form", sortDirection = GetNewSortDirection("Form"), search = Model.Search }
-                )
-                @if (Model.SortBy == "Form")
-                {
-                    <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
-                         <use href="assets/icons.svg#downArrow"></use>
-                    </svg>
-                }
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Disks) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SizeGb) ГБ
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WriteSpeedMbps) МБ/с
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReadSpeedMbps) МБ/с
-            </td>
-            <td>
-                @item.Price.ToString("0") ₽
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Form)
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    @if (Model.SortBy == "SizeGb")
+                    {
+                        <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                             <use href="assets/icons.svg#downArrow"></use>
+                        </svg>
+                    }
+                </th>
+                <th>
+                    @Html.ActionLink(
+                        Html.DisplayNameFor(model => model.Disks[0].WriteSpeedMbps),
+                        "Index",
+                        new { sortBy = "WriteSpeedMbps", sortDirection = GetNewSortDirection("WriteSpeedMbps"), search = Model.Search }
+                    )
+                    @if (Model.SortBy == "WriteSpeedMbps")
+                    {
+                        <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                             <use href="assets/icons.svg#downArrow"></use>
+                        </svg>
+                    }
+                </th>
+                <th>
+                    @Html.ActionLink(
+                        Html.DisplayNameFor(model => model.Disks[0].ReadSpeedMbps),
+                        "Index",
+                        new { sortBy = "ReadSpeedMbps", sortDirection = GetNewSortDirection("ReadSpeedMbps"), search = Model.Search }
+                    )
+                    @if (Model.SortBy == "ReadSpeedMbps")
+                    {
+                        <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                             <use href="assets/icons.svg#downArrow"></use>
+                        </svg>
+                    }
+                </th>
+                <th>
+                    @Html.ActionLink(
+                        Html.DisplayNameFor(model => model.Disks[0].Price),
+                        "Index",
+                        new { sortBy = "Price", sortDirection = GetNewSortDirection("Price"), search = Model.Search }
+                    )
+                    @if (Model.SortBy == "Price")
+                    {
+                        <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                             <use href="assets/icons.svg#downArrow"></use>
+                        </svg>
+                    }
+                </th>
+                <th>
+                    @Html.ActionLink(
+                        Html.DisplayNameFor(model => model.Disks[0].Type),
+                        "Index",
+                        new { sortBy = "Type", sortDirection = GetNewSortDirection("Type"), search = Model.Search }
+                    )
+                    @if (Model.SortBy == "Type")
+                    {
+                        <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                             <use href="assets/icons.svg#downArrow"></use>
+                        </svg>
+                    }
+                </th>
+                <th>
+                    @Html.ActionLink(
+                        Html.DisplayNameFor(model => model.Disks[0].Form),
+                        "Index",
+                        new { sortBy = "Form", sortDirection = GetNewSortDirection("Form"), search = Model.Search }
+                    )
+                    @if (Model.SortBy == "Form")
+                    {
+                        <svg class="disk-table__sort-icon @(Model.SortDirection != "desc" ? "disk-table__sort-icon_up" : "")">
+                             <use href="assets/icons.svg#downArrow"></use>
+                        </svg>
+                    }
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.Disks) {
+            <tr>
+                <td class="disk-table__cell-name">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SizeGb) ГБ
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WriteSpeedMbps) МБ/с
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReadSpeedMbps) МБ/с
+                </td>
+                <td>
+                    @item.Price.ToString("0") ₽
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Form)
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+
+</div>

@@ -12,7 +12,7 @@
     "no-descending-specificity": [true, {"ignore": ["selectors-within-list"]}],
     "no-duplicate-selectors": true,
     "no-empty-source": null,
-    "selector-pseudo-element-no-unknown": true,
+    "selector-pseudo-element-no-unknown": [true, {"ignorePseudoClasses": "deep"}],
     "string-quotes": "single"
   },
 
