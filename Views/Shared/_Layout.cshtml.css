@@ -1,0 +1,13 @@
+﻿.navbar {
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: var(--primary);
+}
+
+::deep.navbar .nav-link {
+    color: var(--text-white);
+}
+
+::deep.navbar .nav-link:hover {
+    color: var(--text-white-hover);
+}
