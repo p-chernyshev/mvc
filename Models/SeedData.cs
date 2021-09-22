@@ -11,6 +11,15 @@ namespace Mvc.Models
         public static void Initialize(IServiceProvider serviceProvider)
         {
             using var context = new MvcDiskContext(serviceProvider.GetRequiredService<DbContextOptions<MvcDiskContext>>());
+
+            SeedDisk(context);
+            SeedCity(context);
+
+            context.SaveChanges();
+        }
+
+        private static void SeedDisk(MvcDiskContext context)
+        {
             if (context.Disk.Any()) return;
 
             context.Disk.AddRange(
@@ -135,8 +144,29 @@ namespace Mvc.Models
                     Form = DiskForm.Sata35,
                 }
             );
+        }
 
-            context.SaveChanges();
+        private static void SeedCity(MvcDiskContext context)
+        {
+            if (context.City.Any()) return;
+
+            context.City.AddRange(
+                new City { Name = "Москва" },
+                new City { Name = "Санкт-Петербург" },
+                new City { Name = "Новосибирск" },
+                new City { Name = "Екатеринбург" },
+                new City { Name = "Казань" },
+                new City { Name = "Нижний Новгород" },
+                new City { Name = "Челябинск" },
+                new City { Name = "Самара" },
+                new City { Name = "Омск" },
+                new City { Name = "Ростов-на-Дону" },
+                new City { Name = "Уфа" },
+                new City { Name = "Красноярск" },
+                new City { Name = "Воронеж" },
+                new City { Name = "Пермь" },
+                new City { Name = "Волгоград" }
+            );
         }
     }
 }
