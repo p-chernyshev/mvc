@@ -45,5 +45,12 @@ namespace Mvc.Controllers
                 Search = search,
             });
         }
+
+        [HttpPost]
+        public IActionResult SelectCity(int id)
+        {
+            Response.Cookies.Append("City", id.ToString());
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Nunito:800,700,600,400);
 
 :root {
+    --background: #FFFFFF;
     --primary: #DF0031;
     --text-white: #FFFFFF;
     --text-white-hover: #FFFFFFCC;
@@ -20,9 +21,31 @@ html {
 
 body {
     font-family: 'Nunito', sans-serif;
+    background-color: var(--background);
 }
 
 a:hover,
 a {
     color: var(--primary);
+}
+
+.mvc-button {
+    vertical-align: middle;
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    background-color: var(--background);
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    color: var(--primary);
+    font-weight: 600;
+    line-height: 40px;
+    text-transform: uppercase;
+    transition: background 0.15s;
+}
+
+.mvc-button:hover {
+    background-color: var(--primary);
+    color: var(--text-white);
+    text-decoration: underline;
 }
