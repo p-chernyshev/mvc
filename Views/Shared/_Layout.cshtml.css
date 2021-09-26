@@ -11,3 +11,35 @@
 ::deep.navbar .nav-link:hover {
     color: var(--text-white-hover);
 }
+
+.popup {
+    position: relative;
+}
+
+.popup__label {
+    cursor: pointer;
+    user-select: none;
+}
+
+.popup__popup-block {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+}
+
+.popup__popup-block_visible,
+.popup:focus-within .popup__popup-block {
+    opacity: 1;
+    pointer-events: initial;
+}
+
+@media (min-width: 576px) {
+    .popup__popup-block {
+        position: absolute;
+        top: 100%;
+        left: 0;
+    }
+}

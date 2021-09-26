@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mvc.Data;
@@ -17,6 +18,12 @@ namespace Mvc.Controllers
         public DiskController(MvcDiskContext context)
         {
             _context = context;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            ViewData["SelectedCity"] = Request.Cookies["City"];
         }
 
         public async Task<IActionResult> Index(string sortBy = "Id", string sortDirection = "asc", string search = "")
@@ -44,6 +51,13 @@ namespace Mvc.Controllers
                 SortDirection = sortDirection,
                 Search = search,
             });
+        }
+
+        [HttpPost]
+        public IActionResult SelectCity(int id)
+        {
+            Response.Cookies.Append("City", id.ToString());
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -21,6 +21,12 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Disk" asp-action="Index">Товары</a>
                     </li>
+                    <li class="popup nav-item" tabindex="0">
+                        <a class="popup__label nav-link">Город</a>
+                        <div class="popup__popup-block @(ViewData["SelectedCity"] == null ? "popup__popup-block_visible" : "")">
+                            @await Component.InvokeAsync("CitySelect")
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
