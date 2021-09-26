@@ -23,7 +23,9 @@
                     </li>
                     <li class="popup nav-item" tabindex="0">
                         <a class="popup__label nav-link">Город</a>
-                        <div class="popup__popup-block">@await Component.InvokeAsync("CitySelect")</div>
+                        <div class="popup__popup-block @(ViewData["SelectedCity"] == null ? "popup__popup-block_visible" : "")">
+                            @await Component.InvokeAsync("CitySelect")
+                        </div>
                     </li>
                 </ul>
             </div>

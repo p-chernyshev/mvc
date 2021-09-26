@@ -30,6 +30,7 @@
     transition: opacity 0.15s;
 }
 
+.popup__popup-block_visible,
 .popup:focus-within .popup__popup-block {
     opacity: 1;
     pointer-events: initial;
