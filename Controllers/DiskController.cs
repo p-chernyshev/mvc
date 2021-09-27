@@ -59,5 +59,12 @@ namespace Mvc.Controllers
             Response.Cookies.Append("City", id.ToString());
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public IActionResult AddToCart([FromBody] int id)
+        {
+            Console.WriteLine(id);
+            return Ok(id);
+        }
     }
 }

@@ -121,6 +121,7 @@
                         </svg>
                     }
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -147,9 +148,28 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Form)
                 </td>
+                <td>
+                    <a class="disk-table__to-cart" tabindex="0" data-id="@item.Id">В корзину</a>
+                </td>
             </tr>
     }
         </tbody>
     </table>
 
 </div>
+
+@section Scripts
+{
+    <script>
+        $('.disk-table__to-cart').click(function() {
+            $.ajax({
+                type: 'POST',
+                url: '/Disk/AddToCart',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify($(this).data('id')),
+                success: (data, status, request) => console.log(data),
+                error: (request, status, error) => console.error(error, request),
+            });
+        });
+    </script>
+}

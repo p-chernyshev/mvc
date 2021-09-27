@@ -27,6 +27,7 @@ body {
 a:hover,
 a {
     color: var(--primary);
+    cursor: pointer;
 }
 
 .mvc-button {
