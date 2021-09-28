@@ -13,6 +13,8 @@ namespace Mvc.Controllers
 {
     public class DiskController : Controller
     {
+        private const string CookieKeyCity = "City";
+
         private readonly MvcDiskContext _context;
 
         public DiskController(MvcDiskContext context)
@@ -23,7 +25,7 @@ namespace Mvc.Controllers
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
-            ViewData["SelectedCity"] = Request.Cookies["City"];
+            ViewData["SelectedCity"] = Request.Cookies[CookieKeyCity];
         }
 
         public async Task<IActionResult> Index(string sortBy = "Id", string sortDirection = "asc", string search = "")
@@ -56,7 +58,7 @@ namespace Mvc.Controllers
         [HttpPost]
         public IActionResult SelectCity(int id)
         {
-            Response.Cookies.Append("City", id.ToString());
+            Response.Cookies.Append(CookieKeyCity, id.ToString());
             return RedirectToAction(nameof(Index));
         }
 
