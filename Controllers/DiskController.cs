@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,6 +16,7 @@ namespace Mvc.Controllers
     public class DiskController : Controller
     {
         private const string CookieKeyCity = "City";
+        private const string SessionKeyCart = "Cart";
 
         private readonly MvcDiskContext _context;
 
@@ -26,6 +29,7 @@ namespace Mvc.Controllers
         {
             base.OnActionExecuting(context);
             ViewData["SelectedCity"] = Request.Cookies[CookieKeyCity];
+            ViewData["InCart"] = GetCartLength(GetSessionCart());
         }
 
         public async Task<IActionResult> Index(string sortBy = "Id", string sortDirection = "asc", string search = "")
@@ -63,10 +67,44 @@ namespace Mvc.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddToCart([FromBody] int id)
+        public IActionResult AddToCart([FromBody] int diskId)
         {
-            Console.WriteLine(id);
-            return Ok(id);
+            if (!DiskExists(diskId)) return NotFound();
+
+            var cart = GetSessionCart();
+
+            var selectedDiskEntry = cart.FirstOrDefault(entry => entry.DiskId == diskId);
+            if (selectedDiskEntry is { } foundSelectedDiskEntry)
+            {
+                foundSelectedDiskEntry.Count++;
+            }
+            else
+            {
+                cart.Add(new CartEntry(diskId));
+            }
+
+            SaveSessionCart(cart);
+            return Ok(GetCartLength(cart));
+        }
+
+        private List<CartEntry> GetSessionCart()
+        {
+            var cartJson = HttpContext.Session.GetString(SessionKeyCart);
+            return cartJson is null
+                ? new List<CartEntry>()
+                : JsonSerializer.Deserialize<List<CartEntry>>(cartJson);
+        }
+
+        private int GetCartLength(IEnumerable<CartEntry> cart) => cart.Select(entry => entry.Count).Sum();
+
+        private void SaveSessionCart(IEnumerable<CartEntry> cart)
+        {
+            HttpContext.Session.SetString(SessionKeyCart, JsonSerializer.Serialize(cart));
+        }
+
+        private bool DiskExists(int id)
+        {
+            return _context.Disk.Any(disk => disk.Id == id);
         }
     }
 }
