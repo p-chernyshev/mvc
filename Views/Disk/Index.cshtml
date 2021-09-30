@@ -167,7 +167,10 @@
                 url: '/Disk/AddToCart',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify($(this).data('id')),
-                success: (data, status, request) => console.log(data),
+                success: data => {
+                    $('.mvc-badge').addClass('mvc-badge_visible').removeClass('mvc-badge_hidden');
+                    $('.mvc-badge__text').text(data);
+                },
                 error: (request, status, error) => console.error(error, request),
             });
         });

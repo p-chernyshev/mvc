@@ -2,9 +2,11 @@
 
 :root {
     --background: #FFFFFF;
+    --background-grey: #DADADA;
     --primary: #DF0031;
     --text-white: #FFFFFF;
     --text-white-hover: #FFFFFFCC;
+    --text-black: #333333;
     --border: #CCCCCC;
     --border-focus: #AAAAAA;
 }
