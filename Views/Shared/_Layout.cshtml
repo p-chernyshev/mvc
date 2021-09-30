@@ -27,6 +27,12 @@
                             @await Component.InvokeAsync("CitySelect")
                         </div>
                     </li>
+                    <li class="nav-item mvc-badge__anchor">
+                        <a class="nav-link" asp-area="" asp-controller="Disk" asp-action="Index">Корзина</a>
+                        <div class="mvc-badge @(ViewData["InCart"] is > 0 ? "mvc-badge_visible" : "mvc-badge_hidden")">
+                            <div><span class="mvc-badge__text">@ViewData["InCart"]</span></div>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
