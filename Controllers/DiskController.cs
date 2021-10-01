@@ -68,38 +68,31 @@ namespace Mvc.Controllers
 
         public async Task<IActionResult> Cart()
         {
-            var cart = GetSessionCart();
-            var cartViewList = (await _context.Disk.ToListAsync())
-                .Join(
-                    cart,
-                    disk => disk.Id,
-                    cartEntry => cartEntry.DiskId,
-                    (disk, cartEntry) => new CartEntryViewModel(disk, cartEntry)
-                )
-                .ToArray();
-
-            return View(new CartViewModel(cartViewList));
+            var cart = await GetCart(GetSessionCart());
+            return View(cart);
         }
 
         [HttpPost]
-        public IActionResult AddToCart([FromBody] int diskId)
+        public async Task<IActionResult> AddToCart([FromBody] int diskId)
         {
             if (!DiskExists(diskId)) return NotFound();
 
-            var cart = GetSessionCart();
+            var sessionCart = GetSessionCart();
 
-            var selectedDiskEntry = cart.FirstOrDefault(entry => entry.DiskId == diskId);
+            var selectedDiskEntry = sessionCart.FirstOrDefault(entry => entry.DiskId == diskId);
             if (selectedDiskEntry is { } foundSelectedDiskEntry)
             {
                 foundSelectedDiskEntry.Count++;
             }
             else
             {
-                cart.Add(new CartEntry(diskId));
+                sessionCart.Add(new CartEntry(diskId));
             }
 
-            SaveSessionCart(cart);
-            return Ok(GetCartLength(cart));
+            var cart = await GetCart(sessionCart);
+
+            SaveSessionCart(sessionCart);
+            return Ok(new CartActionResponseModel(cart, diskId));
         }
 
         private List<CartEntry> GetSessionCart()
@@ -115,6 +108,21 @@ namespace Mvc.Controllers
         private void SaveSessionCart(IEnumerable<CartEntry> cart)
         {
             HttpContext.Session.SetString(SessionKeyCart, JsonSerializer.Serialize(cart));
+        }
+
+        private async Task<CartViewModel> GetCart(List<CartEntry> sessionCart)
+        {
+            var cartViewList = (await _context.Disk.ToListAsync())
+                .Join(
+                    sessionCart,
+                    disk => disk.Id,
+                    cartEntry => cartEntry.DiskId,
+                    (disk, cartEntry) => new CartEntryViewModel(disk, cartEntry)
+                )
+                .ToArray();
+
+            var cart = new CartViewModel(cartViewList);
+            return cart;
         }
 
         private bool DiskExists(int id)

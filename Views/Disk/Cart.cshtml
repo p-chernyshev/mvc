@@ -27,7 +27,7 @@
         <tbody>
         @foreach (var item in Model.Entries)
         {
-            <tr>
+            <tr data-id="@item.Disk.Id">
                 <td class="cart__cell-name">
                     @Html.DisplayFor(modelItem => item.Disk.Name)
                 </td>
@@ -35,15 +35,15 @@
                     @item.Disk.Price.ToString("0") ₽
                 </td>
                 <td>
-                    <a class="cart__decrease" tabindex="0" data-id="@item.Disk.Id">-</a>
-                    @Html.DisplayFor(modelItem => item.Count)
-                    <a class="cart__increase" tabindex="0" data-id="@item.Disk.Id">+</a>
+                    <a class="cart__decrease" tabindex="0">-</a>
+                    <span class="cart__entry-count">@Html.DisplayFor(modelItem => item.Count)</span>
+                    <a class="cart__increase" tabindex="0">+</a>
                 </td>
                 <td>
                     <span class="cart__entry-total">@(item.Total.ToString("0")) ₽</span>
                 </td>
                 <td>
-                    <a class="cart__remove" tabindex="0" data-id="@item.Disk.Id">Удалить</a>
+                    <a class="cart__remove" tabindex="0">Удалить</a>
                 </td>
             </tr>
         }
@@ -65,3 +65,25 @@
     </div>
 
 </div>
+
+@section Scripts
+{
+    <script>
+        $('.cart__increase').click(function() {
+            const row = $(this).parents('tr').first();
+            $.ajax({
+                type: 'POST',
+                url: '/Disk/AddToCart',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(row.data('id')),
+                success: data => {
+                    window.updateBadge(data);
+                    row.find('.cart__entry-count').text(data.diskEntry.count);
+                    row.find('.cart__entry-total').text(data.diskEntry.total);
+                    $('.cart__total-sum').text(data.total);
+                },
+                error: (request, status, error) => console.error(error, request),
+            });
+        });
+    </script>
+}

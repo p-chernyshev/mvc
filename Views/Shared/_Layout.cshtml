@@ -47,6 +47,16 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    window.updateBadge = function(data) {
+        if (data?.length) {
+            $('.mvc-badge').addClass('mvc-badge_visible').removeClass('mvc-badge_hidden');
+            $('.mvc-badge__text').text(data.length);
+        } else {
+            $('.mvc-badge').addClass('mvc-badge_hidden').removeClass('mvc-badge_visible');
+        }
+    }
+</script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
