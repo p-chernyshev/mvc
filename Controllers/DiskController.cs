@@ -78,7 +78,7 @@ namespace Mvc.Controllers
                 )
                 .ToArray();
 
-            return View(cartViewList);
+            return View(new CartViewModel(cartViewList));
         }
 
         [HttpPost]
