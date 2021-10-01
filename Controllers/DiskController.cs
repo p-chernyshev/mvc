@@ -66,6 +66,21 @@ namespace Mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Cart()
+        {
+            var cart = GetSessionCart();
+            var cartViewList = (await _context.Disk.ToListAsync())
+                .Join(
+                    cart,
+                    disk => disk.Id,
+                    cartEntry => cartEntry.DiskId,
+                    (disk, cartEntry) => new CartEntryViewModel(disk, cartEntry)
+                )
+                .ToArray();
+
+            return View(cartViewList);
+        }
+
         [HttpPost]
         public IActionResult AddToCart([FromBody] int diskId)
         {
