@@ -10,7 +10,7 @@ namespace Mvc.Models
 
         public CartActionResponseModel(CartViewModel cart, int diskId)
         {
-            DiskEntry = cart.Entries.First(entry => entry.Disk.Id == diskId);
+            DiskEntry = cart.Entries.FirstOrDefault(entry => entry.Disk.Id == diskId);
             Length = cart.Entries.Select(entry => entry.Count).Sum();
             Total = cart.Total;
         }

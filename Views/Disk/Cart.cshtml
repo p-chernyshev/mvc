@@ -78,8 +78,10 @@
                 data: JSON.stringify(row.data('id')),
                 success: data => {
                     window.updateBadge(data);
-                    row.find('.cart__entry-count').text(data.diskEntry.count);
-                    row.find('.cart__entry-total').text(data.diskEntry.total);
+                    if (data.diskEntry) {
+                        row.find('.cart__entry-count').text(data.diskEntry.count);
+                        row.find('.cart__entry-total').text(data.diskEntry.total);
+                    }
                     $('.cart__total-sum').text(data.total);
                 },
                 error: (request, status, error) => console.error(error, request),
@@ -95,8 +97,26 @@
                 data: JSON.stringify(row.data('id')),
                 success: data => {
                     window.updateBadge(data);
-                    row.find('.cart__entry-count').text(data.diskEntry.count);
-                    row.find('.cart__entry-total').text(data.diskEntry.total);
+                    if (data.diskEntry) {
+                        row.find('.cart__entry-count').text(data.diskEntry.count);
+                        row.find('.cart__entry-total').text(data.diskEntry.total);
+                    }
+                    $('.cart__total-sum').text(data.total);
+                },
+                error: (request, status, error) => console.error(error, request),
+            });
+        });
+
+        $('.cart__remove').click(function() {
+            const row = $(this).parents('tr').first();
+            $.ajax({
+                type: 'POST',
+                url: '/Disk/CartRemoveEntry',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(row.data('id')),
+                success: data => {
+                    window.updateBadge(data);
+                    row.remove();
                     $('.cart__total-sum').text(data.total);
                 },
                 error: (request, status, error) => console.error(error, request),
