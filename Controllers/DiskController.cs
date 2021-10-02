@@ -95,6 +95,25 @@ namespace Mvc.Controllers
             return Ok(new CartActionResponseModel(cart, diskId));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CartDecreaseEntry([FromBody] int diskId)
+        {
+            if (!DiskExists(diskId)) return NotFound();
+
+            var sessionCart = GetSessionCart();
+
+            var selectedDiskEntry = sessionCart.FirstOrDefault(entry => entry.DiskId == diskId);
+            if (selectedDiskEntry is { Count: > 1 } foundSelectedDiskEntry)
+            {
+                foundSelectedDiskEntry.Count--;
+            }
+
+            var cart = await GetCart(sessionCart);
+
+            SaveSessionCart(sessionCart);
+            return Ok(new CartActionResponseModel(cart, diskId));
+        }
+
         private List<CartEntry> GetSessionCart()
         {
             var cartJson = HttpContext.Session.GetString(SessionKeyCart);
