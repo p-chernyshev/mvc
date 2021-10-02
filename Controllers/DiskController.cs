@@ -86,7 +86,7 @@ namespace Mvc.Controllers
             }
             else
             {
-                sessionCart.Add(new CartEntry(diskId));
+                sessionCart.Add(new CartEntrySessionJsonModel(diskId));
             }
 
             var cart = await GetCart(sessionCart);
@@ -133,22 +133,22 @@ namespace Mvc.Controllers
             return Ok(new CartActionResponseModel(cart, diskId));
         }
 
-        private List<CartEntry> GetSessionCart()
+        private List<CartEntrySessionJsonModel> GetSessionCart()
         {
             var cartJson = HttpContext.Session.GetString(SessionKeyCart);
             return cartJson is null
-                ? new List<CartEntry>()
-                : JsonSerializer.Deserialize<List<CartEntry>>(cartJson);
+                ? new List<CartEntrySessionJsonModel>()
+                : JsonSerializer.Deserialize<List<CartEntrySessionJsonModel>>(cartJson);
         }
 
-        private int GetCartLength(IEnumerable<CartEntry> cart) => cart.Select(entry => entry.Count).Sum();
+        private int GetCartLength(IEnumerable<CartEntrySessionJsonModel> cart) => cart.Select(entry => entry.Count).Sum();
 
-        private void SaveSessionCart(IEnumerable<CartEntry> cart)
+        private void SaveSessionCart(IEnumerable<CartEntrySessionJsonModel> cart)
         {
             HttpContext.Session.SetString(SessionKeyCart, JsonSerializer.Serialize(cart));
         }
 
-        private async Task<CartViewModel> GetCart(List<CartEntry> sessionCart)
+        private async Task<CartViewModel> GetCart(List<CartEntrySessionJsonModel> sessionCart)
         {
             var cartViewList = (await _context.Disk.ToListAsync())
                 .Join(

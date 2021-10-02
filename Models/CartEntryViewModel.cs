@@ -10,7 +10,7 @@ namespace Mvc.Models
         [Display(Name = "Всего")]
         public decimal Total { get; }
 
-        public CartEntryViewModel(Disk disk, CartEntry cartEntry)
+        public CartEntryViewModel(Disk disk, CartEntrySessionJsonModel cartEntry)
         {
             Disk = disk;
             Count = cartEntry.Count;
