@@ -66,40 +66,130 @@ namespace Mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Cart()
+        {
+            var cart = await GetCart(GetSessionCart());
+            return View(cart);
+        }
+
         [HttpPost]
-        public IActionResult AddToCart([FromBody] int diskId)
+        public async Task<IActionResult> AddToCart([FromBody] int diskId)
         {
             if (!DiskExists(diskId)) return NotFound();
 
-            var cart = GetSessionCart();
+            var sessionCart = GetSessionCart();
 
-            var selectedDiskEntry = cart.FirstOrDefault(entry => entry.DiskId == diskId);
+            var selectedDiskEntry = sessionCart.FirstOrDefault(entry => entry.DiskId == diskId);
             if (selectedDiskEntry is { } foundSelectedDiskEntry)
             {
                 foundSelectedDiskEntry.Count++;
             }
             else
             {
-                cart.Add(new CartEntry(diskId));
+                sessionCart.Add(new CartEntrySessionJsonModel(diskId));
             }
 
-            SaveSessionCart(cart);
-            return Ok(GetCartLength(cart));
+            var cart = await GetCart(sessionCart);
+
+            SaveSessionCart(sessionCart);
+            return Ok(new CartActionResponseModel(cart, diskId));
         }
 
-        private List<CartEntry> GetSessionCart()
+        [HttpPost]
+        public async Task<IActionResult> CartDecreaseEntry([FromBody] int diskId)
+        {
+            if (!DiskExists(diskId)) return NotFound();
+
+            var sessionCart = GetSessionCart();
+
+            var selectedDiskEntry = sessionCart.FirstOrDefault(entry => entry.DiskId == diskId);
+            if (selectedDiskEntry is { Count: > 1 } foundSelectedDiskEntry)
+            {
+                foundSelectedDiskEntry.Count--;
+            }
+
+            var cart = await GetCart(sessionCart);
+
+            SaveSessionCart(sessionCart);
+            return Ok(new CartActionResponseModel(cart, diskId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CartRemoveEntry([FromBody] int diskId)
+        {
+            if (!DiskExists(diskId)) return NotFound();
+
+            var sessionCart = GetSessionCart();
+
+            var selectedDiskEntry = sessionCart.FirstOrDefault(entry => entry.DiskId == diskId);
+            if (selectedDiskEntry is { } foundSelectedDiskEntry)
+            {
+                sessionCart.Remove(foundSelectedDiskEntry);
+            }
+
+            var cart = await GetCart(sessionCart);
+
+            SaveSessionCart(sessionCart);
+            return Ok(new CartActionResponseModel(cart, diskId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout()
+        {
+            var sessionCart = GetSessionCart();
+            var cityIdCookie = Request.Cookies[CookieKeyCity];
+            if (sessionCart.Count == 0 || cityIdCookie is null) return RedirectToAction(nameof(Cart));
+
+            var cityId = int.Parse(cityIdCookie);
+
+            var order = new Order
+            {
+                CityId = cityId,
+                Entries = sessionCart.Select(cartEntry => new OrderEntry
+                {
+                    DiskId = cartEntry.DiskId,
+                    Count = cartEntry.Count,
+                }).ToList(),
+            };
+            _context.Orders.Add(order);
+
+            await _context.SaveChangesAsync();
+
+            SaveSessionCart(null);
+            return RedirectToAction(nameof(Index));
+        }
+
+        private List<CartEntrySessionJsonModel> GetSessionCart()
         {
             var cartJson = HttpContext.Session.GetString(SessionKeyCart);
             return cartJson is null
-                ? new List<CartEntry>()
-                : JsonSerializer.Deserialize<List<CartEntry>>(cartJson);
+                ? new List<CartEntrySessionJsonModel>()
+                : JsonSerializer.Deserialize<List<CartEntrySessionJsonModel>>(cartJson);
         }
 
-        private int GetCartLength(IEnumerable<CartEntry> cart) => cart.Select(entry => entry.Count).Sum();
+        private int GetCartLength(IEnumerable<CartEntrySessionJsonModel> cart) => cart.Select(entry => entry.Count).Sum();
 
-        private void SaveSessionCart(IEnumerable<CartEntry> cart)
+        private void SaveSessionCart(IEnumerable<CartEntrySessionJsonModel> cart)
         {
-            HttpContext.Session.SetString(SessionKeyCart, JsonSerializer.Serialize(cart));
+            var cartJson = cart is null
+                ? "[]"
+                : JsonSerializer.Serialize(cart);
+            HttpContext.Session.SetString(SessionKeyCart, cartJson);
+        }
+
+        private async Task<CartViewModel> GetCart(List<CartEntrySessionJsonModel> sessionCart)
+        {
+            var cartViewList = (await _context.Disk.ToListAsync())
+                .Join(
+                    sessionCart,
+                    disk => disk.Id,
+                    cartEntry => cartEntry.DiskId,
+                    (disk, cartEntry) => new CartEntryViewModel(disk, cartEntry)
+                )
+                .ToArray();
+
+            var cart = new CartViewModel(cartViewList);
+            return cart;
         }
 
         private bool DiskExists(int id)
