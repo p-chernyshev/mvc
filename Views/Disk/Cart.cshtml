@@ -50,7 +50,7 @@
         </tbody>
     </table>
 
-    <div class="cart__result">
+    <form asp-controller="Disk" asp-action="Checkout" method="post" class="cart__result">
         <h4 class="cart__total">
             Сумма:
             <span class="cart__total-sum">
@@ -59,11 +59,12 @@
             ₽
         </h4>
 
-        <button class="mvc-button">
-            Оформить покупку
-        </button>
-    </div>
-
+        <input
+            class="mvc-button cart__checkout"
+            type="submit"
+            value="Оформить покупку"
+        >
+    </form>
 </div>
 
 @section Scripts

@@ -2,7 +2,7 @@
     font-weight: 700;
 }
 
-.cart__result {
+::deep .cart__result {
     display: flex;
     align-items: center;
     justify-content: flex-end;

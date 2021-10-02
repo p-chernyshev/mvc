@@ -133,6 +133,32 @@ namespace Mvc.Controllers
             return Ok(new CartActionResponseModel(cart, diskId));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Checkout()
+        {
+            var sessionCart = GetSessionCart();
+            var cityIdCookie = Request.Cookies[CookieKeyCity];
+            if (sessionCart.Count == 0 || cityIdCookie is null) return RedirectToAction(nameof(Cart));
+
+            var cityId = int.Parse(cityIdCookie);
+
+            var order = new Order
+            {
+                CityId = cityId,
+                Entries = sessionCart.Select(cartEntry => new OrderEntry
+                {
+                    DiskId = cartEntry.DiskId,
+                    Count = cartEntry.Count,
+                }).ToList(),
+            };
+            _context.Orders.Add(order);
+
+            await _context.SaveChangesAsync();
+
+            SaveSessionCart(null);
+            return RedirectToAction(nameof(Index));
+        }
+
         private List<CartEntrySessionJsonModel> GetSessionCart()
         {
             var cartJson = HttpContext.Session.GetString(SessionKeyCart);
@@ -145,7 +171,10 @@ namespace Mvc.Controllers
 
         private void SaveSessionCart(IEnumerable<CartEntrySessionJsonModel> cart)
         {
-            HttpContext.Session.SetString(SessionKeyCart, JsonSerializer.Serialize(cart));
+            var cartJson = cart is null
+                ? "[]"
+                : JsonSerializer.Serialize(cart);
+            HttpContext.Session.SetString(SessionKeyCart, cartJson);
         }
 
         private async Task<CartViewModel> GetCart(List<CartEntrySessionJsonModel> sessionCart)
