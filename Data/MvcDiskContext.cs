@@ -16,5 +16,7 @@ namespace Mvc.Data
 
         public DbSet<Disk> Disk { get; set; }
         public DbSet<City> City { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderEntry> OrderEntries { get; set; }
     }
 }
