@@ -1,0 +1,13 @@
+.header__navbar {
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: var(--primary);
+}
+
+.header .header__navbar .header__navbar-link {
+    color: var(--text-white);
+}
+
+.header .header__navbar .header__navbar-link:hover {
+    color: var(--text-white-hover);
+}
