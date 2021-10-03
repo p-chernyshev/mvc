@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Header.css';
 
 class Header extends React.Component {
@@ -18,10 +19,10 @@ class Header extends React.Component {
                         <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                             <ul className="navbar-nav flex-grow-1">
                                 <li className="nav-item">
-                                    <a className="header__navbar-link nav-link">Товары</a>
+                                    <Link to="/list" className="header__navbar-link nav-link">Товары</Link>
                                 </li>
                                 <li className="nav-item mvc-badge__anchor">
-                                    <a className="header__navbar-link nav-link">Корзина</a>
+                                    <Link to="/cart" className="header__navbar-link nav-link">Корзина</Link>
                                 </li>
                             </ul>
                         </div>
