@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 
 class Header extends React.Component {
-    public render(): JSX.Element {
+    public render(): React.ReactNode {
         return (
             <header className="header">
                 <nav className="header__navbar navbar navbar-expand-sm navbar-toggleable-sm navbar-dark mb-3">

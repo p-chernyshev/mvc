@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import Header from './Header';
 
 class App extends React.Component {
-    public render(): JSX.Element {
+    public render(): React.ReactNode {
         return (
             <>
                 <Header />
