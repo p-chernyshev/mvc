@@ -10,7 +10,7 @@ interface ListProps {
     onDickClickToCart(diskId: number): void;
 }
 
-class List extends React.Component<ListProps, ListState> {
+export default class List extends React.Component<ListProps, ListState> {
     public async componentDidMount(): Promise<void> {
         const response = await fetch('https://localhost:5001/Disk/IndexJson');
         const disks = await response.json() as Disk[];
@@ -56,7 +56,4 @@ class List extends React.Component<ListProps, ListState> {
             </div>
         );
     }
-
 }
-
-export default List;

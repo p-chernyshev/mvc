@@ -6,7 +6,7 @@ interface HeaderProps {
     inCart?: number;
 }
 
-class Header extends React.Component<HeaderProps> {
+export default class Header extends React.Component<HeaderProps> {
     public render(): React.ReactNode {
         return (
             <header className="header">
@@ -39,5 +39,3 @@ class Header extends React.Component<HeaderProps> {
         );
     }
 }
-
-export default Header;

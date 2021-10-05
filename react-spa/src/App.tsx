@@ -9,7 +9,7 @@ interface AppState {
     inCart?: number;
 }
 
-class App extends React.Component<{ }, AppState> {
+export default class App extends React.Component<{ }, AppState> {
     public async componentDidMount(): Promise<void> {
         const response = await fetch('https://localhost:5001/Disk/CartLengthJson', { credentials: 'include' });
         this.setState({ inCart: await response.json() });
@@ -44,5 +44,3 @@ class App extends React.Component<{ }, AppState> {
         this.setState({ inCart: cartActionResponse.length });
     }
 }
-
-export default App;
