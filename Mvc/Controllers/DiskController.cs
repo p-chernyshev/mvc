@@ -101,6 +101,7 @@ namespace Mvc.Controllers
             return View(cart);
         }
 
+        [EnableCors("Localhost")]
         [HttpPost]
         public async Task<IActionResult> AddToCart([FromBody] int diskId)
         {
