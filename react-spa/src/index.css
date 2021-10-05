@@ -31,4 +31,5 @@ a:hover,
 a {
     color: var(--primary);
     cursor: pointer;
+    text-decoration: none;
 }
