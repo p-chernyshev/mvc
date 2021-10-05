@@ -42,6 +42,7 @@ class List extends React.Component<{ }, ListState> {
                                 <td>
                                     <a
                                         className="disk-table__to-cart"
+                                        onClick={() => this.handleCartClick(disk.id)}
                                     >В корзину</a>
                                 </td>
                             </tr>
@@ -50,6 +51,15 @@ class List extends React.Component<{ }, ListState> {
                 </table>
             </div>
         );
+    }
+
+    private handleCartClick(diskId: number): void {
+        fetch('https://localhost:5001/Disk/AddToCart', {
+            method: 'POST',
+            headers: { ['Content-Type']: 'application/json' },
+            body: JSON.stringify(diskId),
+            credentials: 'include',
+        });
     }
 }
 
