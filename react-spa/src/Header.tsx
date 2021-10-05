@@ -2,7 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-class Header extends React.Component {
+interface HeaderProps {
+    inCart?: number;
+}
+
+class Header extends React.Component<HeaderProps> {
     public render(): React.ReactNode {
         return (
             <header className="header">
@@ -23,6 +27,9 @@ class Header extends React.Component {
                                 </li>
                                 <li className="nav-item mvc-badge__anchor">
                                     <Link to="/cart" className="header__navbar-link nav-link">Корзина</Link>
+                                    <div className={`mvc-badge ${this.props.inCart ? 'mvc-badge_visible' : 'mvc-badge_hidden'}`}>
+                                        <div><span className="mvc-badge__text">{this.props.inCart}</span></div>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

@@ -51,6 +51,13 @@ namespace Mvc.Controllers
             return Json(await DisksList(sortBy, sortDirection, search));
         }
 
+        [EnableCors("Localhost")]
+        [HttpGet]
+        public IActionResult CartLengthJson()
+        {
+            return Json(GetCartLength(GetSessionCart()));
+        }
+
         private Task<List<Disk>> DisksList(string sortBy, string sortDirection, string search)
         {
             var filteredQuery = string.IsNullOrEmpty(search)

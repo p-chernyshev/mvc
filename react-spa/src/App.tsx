@@ -3,17 +3,27 @@ import './App.css';
 import { Route, Redirect } from 'react-router-dom';
 import Header from './Header';
 import List from './List';
+import { CartActionResponse } from './types/CartActionResponse';
 
-class App extends React.Component {
+interface AppState {
+    inCart?: number;
+}
+
+class App extends React.Component<{ }, AppState> {
+    public async componentDidMount(): Promise<void> {
+        const response = await fetch('https://localhost:5001/Disk/CartLengthJson', { credentials: 'include' });
+        this.setState({ inCart: await response.json() });
+    }
+
     public render(): React.ReactNode {
         return (
             <>
-                <Header />
+                <Header inCart={this.state?.inCart}/>
                 <div className="container">
                     <main role="main" className="pb-3">
                         <Route exact path=""> <Redirect to="/list"/> </Route>
                         <Route path="/list">
-                            <List />
+                            <List onDickClickToCart={diskId => this.handleDiskClickToCart(diskId)}/>
                         </Route>
                         <Route path="/cart">
                         </Route>
@@ -21,6 +31,17 @@ class App extends React.Component {
                 </div>
             </>
         );
+    }
+
+    private async handleDiskClickToCart(diskId: number): Promise<void> {
+        const response = await fetch('https://localhost:5001/Disk/AddToCart', {
+            method: 'POST',
+            headers: { ['Content-Type']: 'application/json' },
+            body: JSON.stringify(diskId),
+            credentials: 'include',
+        });
+        const cartActionResponse: CartActionResponse = await response.json();
+        this.setState({ inCart: cartActionResponse.length });
     }
 }
 

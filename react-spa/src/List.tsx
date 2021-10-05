@@ -6,7 +6,11 @@ interface ListState {
     disks: Disk[];
 }
 
-class List extends React.Component<{ }, ListState> {
+interface ListProps {
+    onDickClickToCart(diskId: number): void;
+}
+
+class List extends React.Component<ListProps, ListState> {
     public async componentDidMount(): Promise<void> {
         const response = await fetch('https://localhost:5001/Disk/IndexJson');
         const disks = await response.json() as Disk[];
@@ -42,7 +46,7 @@ class List extends React.Component<{ }, ListState> {
                                 <td>
                                     <a
                                         className="disk-table__to-cart"
-                                        onClick={() => this.handleCartClick(disk.id)}
+                                        onClick={() => this.props.onDickClickToCart(disk.id)}
                                     >В корзину</a>
                                 </td>
                             </tr>
@@ -53,14 +57,6 @@ class List extends React.Component<{ }, ListState> {
         );
     }
 
-    private handleCartClick(diskId: number): void {
-        fetch('https://localhost:5001/Disk/AddToCart', {
-            method: 'POST',
-            headers: { ['Content-Type']: 'application/json' },
-            body: JSON.stringify(diskId),
-            credentials: 'include',
-        });
-    }
 }
 
 export default List;
