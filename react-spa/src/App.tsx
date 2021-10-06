@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
 import { Route, Redirect } from 'react-router-dom';
+import Cart from './Cart';
 import Header from './Header';
 import List from './List';
-import { CartActionResponse } from './types/CartActionResponse';
+import { CartActionResponse } from './types/Cart';
 
 interface AppState {
     inCart?: number;
@@ -26,6 +27,7 @@ export default class App extends React.Component<{ }, AppState> {
                             <List onDickClickToCart={diskId => this.handleDiskClickToCart(diskId)}/>
                         </Route>
                         <Route path="/cart">
+                            <Cart />
                         </Route>
                     </main>
                 </div>

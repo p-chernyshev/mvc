@@ -109,6 +109,13 @@ namespace Mvc.Controllers
         }
 
         [EnableCors("Localhost")]
+        [HttpGet]
+        public async Task<IActionResult> CartJson()
+        {
+            return Json(await GetCart(GetSessionCart()));
+        }
+
+        [EnableCors("Localhost")]
         [HttpPost]
         public async Task<IActionResult> AddToCart([FromBody] int diskId)
         {

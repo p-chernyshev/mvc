@@ -33,3 +33,7 @@ a {
     cursor: pointer;
     text-decoration: none;
 }
+
+.table th {
+    border-color: inherit !important;
+}

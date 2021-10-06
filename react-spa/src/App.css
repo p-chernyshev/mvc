@@ -1,0 +1,25 @@
+.mvc-button {
+    vertical-align: middle;
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    background-color: var(--background);
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    outline: none;
+    color: var(--primary);
+    font-weight: 600;
+    line-height: 40px;
+    text-transform: uppercase;
+    transition: background 0.15s;
+}
+
+.mvc-button:hover {
+    background-color: var(--primary);
+    color: var(--text-white);
+    text-decoration: underline;
+}
+
+.mvc-button:focus {
+    outline: none;
+}
