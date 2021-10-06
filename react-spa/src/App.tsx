@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import Cart from './Cart';
 import Header from './Header';
 import List from './List';
@@ -10,7 +10,7 @@ interface AppState {
     inCart?: number;
 }
 
-export default class App extends React.Component<{ }, AppState> {
+class App extends React.Component<RouteComponentProps, AppState> {
     public async componentDidMount(): Promise<void> {
         const response = await fetch('https://localhost:5001/Disk/CartLengthJson', { credentials: 'include' });
         this.setState({ inCart: await response.json() });
@@ -27,7 +27,7 @@ export default class App extends React.Component<{ }, AppState> {
                             <List onDickClickToCart={diskId => this.handleDiskClickToCart(diskId)}/>
                         </Route>
                         <Route path="/cart">
-                            <Cart />
+                            <Cart onCheckoutSuccessful={() => this.handleCheckoutSuccessful()}/>
                         </Route>
                     </main>
                 </div>
@@ -45,4 +45,11 @@ export default class App extends React.Component<{ }, AppState> {
         const cartActionResponse: CartActionResponse = await response.json();
         this.setState({ inCart: cartActionResponse.length });
     }
+
+    private handleCheckoutSuccessful(): void {
+        this.props.history.push('/list');
+        this.setState({ inCart: undefined });
+    }
 }
+
+export default withRouter(App);

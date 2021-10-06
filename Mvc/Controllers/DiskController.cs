@@ -177,12 +177,26 @@ namespace Mvc.Controllers
             return Ok(new CartActionResponseModel(cart, diskId));
         }
 
+        [EnableCors("Localhost")]
+        [HttpPost]
+        public async Task<IActionResult> CheckoutJson()
+        {
+            return Json(await CheckoutSave());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Checkout()
         {
+            return await CheckoutSave()
+                ? RedirectToAction(nameof(Index))
+                : RedirectToAction(nameof(Cart));
+        }
+
+        private async Task<bool> CheckoutSave()
+        {
             var sessionCart = GetSessionCart();
-            var cityIdCookie = Request.Cookies[CookieKeyCity];
-            if (sessionCart.Count == 0 || cityIdCookie is null) return RedirectToAction(nameof(Cart));
+            var cityIdCookie = Request.Cookies[CookieKeyCity] ?? "14";
+            if (sessionCart.Count == 0) return false;
 
             var cityId = int.Parse(cityIdCookie);
 
@@ -200,7 +214,7 @@ namespace Mvc.Controllers
             await _context.SaveChangesAsync();
 
             SaveSessionCart(null);
-            return RedirectToAction(nameof(Index));
+            return true;
         }
 
         private List<CartEntrySessionJsonModel> GetSessionCart()

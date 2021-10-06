@@ -2,11 +2,15 @@ import React from 'react';
 import './Cart.css';
 import { CartSession } from './types/Cart';
 
-interface CartState {
-    cart: CartSession
+interface CartProps {
+    onCheckoutSuccessful(): void;
 }
 
-export default class Cart extends React.Component<{ }, CartState> {
+interface CartState {
+    cart: CartSession;
+}
+
+export default class Cart extends React.Component<CartProps, CartState> {
     public async componentDidMount(): Promise<void> {
         const response = await fetch('https://localhost:5001/Disk/CartJson', { credentials: 'include' });
         this.setState({ cart: await response.json() });
@@ -53,13 +57,25 @@ export default class Cart extends React.Component<{ }, CartState> {
                         ₽
                     </h4>
 
-                    <input
+                    <button
                         className="mvc-button cart__checkout"
-                        type="submit"
-                        value="Оформить покупку"
-                    />
+                        onClick={() => this.handleCartCheckoutClick()}
+                    >
+                        Оформить покупку
+                    </button>
                 </div>
             </div>
         );
+    }
+
+    private async handleCartCheckoutClick(): Promise<void> {
+        const response = await fetch('https://localhost:5001/Disk/CheckoutJson', {
+            method: 'POST',
+            credentials: 'include',
+        });
+        const checkoutSuccessful: boolean = await response.json();
+        if (checkoutSuccessful) {
+            this.props.onCheckoutSuccessful();
+        }
     }
 }
