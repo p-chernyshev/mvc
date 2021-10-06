@@ -18,7 +18,7 @@ export default class Header extends React.Component<HeaderProps> {
                             data-toggle="collapse"
                             data-target=".navbar-collapse"
                         >
-                            <span className="navbar-toggler-icon"></span>
+                            <span className="navbar-toggler-icon"/>
                         </button>
                         <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                             <ul className="navbar-nav flex-grow-1">

@@ -8,21 +8,21 @@
 
     <table class="table">
         <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Entries[0].Disk.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Entries[0].Disk.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Entries[0].Count)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Entries[0].Total)
-            </th>
-            <th></th>
-        </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Entries[0].Disk.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Entries[0].Disk.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Entries[0].Count)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Entries[0].Total)
+                </th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
         @foreach (var item in Model.Entries)
