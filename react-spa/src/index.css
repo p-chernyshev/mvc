@@ -1,0 +1,39 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url(https://fonts.googleapis.com/css?family=Nunito:800,700,600,400);
+
+:root {
+    --background: #ffffff;
+    --background-grey: #dadada;
+    --primary: #df0031;
+    --text-white: #ffffff;
+    --text-white-hover: #ffffffcc;
+    --text-black: #333333;
+    --border: #cccccc;
+    --border-focus: #aaaaaa;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    font-family: "Nunito", sans-serif;
+    background-color: var(--background);
+}
+
+a:hover,
+a {
+    color: var(--primary);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.table th {
+    border-color: inherit !important;
+}
